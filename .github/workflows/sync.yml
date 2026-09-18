@@ -14,7 +14,7 @@ jobs:
 
       - name: Download latest recipe book from Google Drive
         run: |
-          curl -L "https://drive.google.com/uc?export=download&id=1vpWmEV5WvTFQ4R4B1oJQsTdgj8mBnw6u" -o index.html
+          curl -L "https://drive.google.com/uc?export=download&id=1G4a2p60ciu8hSCxGqNsNK2VUEhvdU6lL" -o index.html
 
       - name: Commit and push if changed
         run: |
