@@ -15,9 +15,17 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install gdown
+        run: pip install gdown
+
       - name: Download latest recipe book from Google Drive
         run: |
-          curl -L "https://drive.google.com/uc?export=download&id=1G4a2p60ciu8hSCxGqNsNK2VUEhvdU6lL" -o index.html
+          gdown "https://drive.google.com/uc?id=1G4a2p60ciu8hSCxGqNsNK2VUEhvdU6lL" -O index.html
           echo "--- First 200 chars of downloaded file: ---"
           head -c 200 index.html
           echo ""
