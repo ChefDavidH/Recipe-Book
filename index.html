@@ -1,2 +1,248 @@
 <!DOCTYPE html>
-<html><head><title>Test</title></head><body><h1>Sync test file</h1><p>If you can read this, the fresh Drive file is fetchable.</p></body></html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>David's Recipe Book</title>
+<style>
+:root {
+  --navy: #1F4E79;
+  --blue: #2E75B6;
+  --light-blue-bg: #EEF4FB;
+  --text: #222;
+  --gray: #666;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+.wrap { max-width: 700px; margin: 0 auto; padding: 20px 16px 80px; }
+h1.book-title {
+  font-family: Arial, sans-serif;
+  color: var(--navy);
+  font-size: 1.8rem;
+  margin: 10px 0 4px;
+  text-align: center;
+}
+p.book-subtitle {
+  text-align: center;
+  color: var(--gray);
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  margin: 0 0 24px;
+}
+.toc-grid-wrap { margin-bottom: 10px; }
+.toc-title {
+  font-family: Arial, sans-serif;
+  color: var(--navy);
+  font-size: 1.3rem;
+  margin: 0 0 14px;
+}
+.chiclet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.chiclet {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--light-blue-bg);
+  border: 1px solid #d5e3f2;
+  border-radius: 14px;
+  padding: 14px 6px;
+  text-decoration: none;
+  min-height: 100px;
+}
+.chiclet:active { background: #dfeafb; }
+.chiclet-icon {
+  font-size: 2.6rem;
+  margin-bottom: 6px;
+  line-height: 1;
+}
+.chiclet-label {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 0.82rem;
+  color: var(--navy);
+  line-height: 1.2;
+}
+.chiclet-count {
+  font-family: Arial, sans-serif;
+  font-size: 0.68rem;
+  color: #888;
+  margin-top: 3px;
+}
+.book-section { padding-top: 8px; margin-bottom: 6px; }
+.section-title {
+  font-family: Arial, sans-serif;
+  color: var(--navy);
+  font-size: 1.5rem;
+  margin: 30px 0 6px;
+}
+.section-intro {
+  font-family: Arial, sans-serif;
+  color: #555;
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: 0 0 16px;
+}
+.section-index {
+  background: var(--light-blue-bg);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 0 0 18px;
+}
+.section-index-title {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 0.82rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 4px 0 6px;
+}
+.section-index ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.section-index li { border-bottom: 1px solid #dde9f5; }
+.section-index li:last-child { border-bottom: none; }
+.section-index a {
+  display: block;
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  color: var(--blue);
+  text-decoration: none;
+  padding: 9px 2px;
+}
+.section-index a:active { opacity: 0.6; }
+.recipe {
+  padding: 18px 0;
+  border-top: 1px solid #ddd;
+  scroll-margin-top: 10px;
+}
+.recipe:first-of-type { border-top: none; }
+.recipe-title {
+  font-family: Arial, sans-serif;
+  color: var(--blue);
+  font-size: 1.25rem;
+  margin: 0 0 4px;
+}
+.recipe-title a { color: var(--blue); text-decoration: none; }
+.recipe-title a:active { opacity: 0.6; }
+.recipe-title .ext { font-size: 0.75rem; }
+.source-note {
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  color: #999;
+  font-style: italic;
+  margin: 0 0 6px;
+}
+.meta {
+  font-family: Arial, sans-serif;
+  font-size: 0.85rem;
+  color: var(--gray);
+  font-style: italic;
+  margin: 0 0 8px;
+}
+.blurb { font-size: 0.98rem; color: #444; margin: 0 0 12px; }
+.see-also { font-family: Arial, sans-serif; font-size: 0.95rem; margin: 8px 0; }
+.see-also a { color: var(--blue); }
+h4.sub {
+  font-family: Arial, sans-serif;
+  color: #444;
+  font-size: 1rem;
+  margin: 16px 0 8px;
+  border-bottom: 2px solid var(--light-blue-bg);
+  padding-bottom: 4px;
+}
+.ingroup-heading {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #555;
+  margin: 10px 0 4px;
+}
+ul.ingredients { list-style: none; margin: 0 0 8px; padding: 0; }
+ul.ingredients li { margin: 6px 0; }
+ul.ingredients label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.98rem;
+  -webkit-user-select: none;
+  user-select: none;
+}
+ul.ingredients input[type="checkbox"] {
+  appearance: auto;
+  -webkit-appearance: checkbox;
+  margin-top: 4px;
+  min-width: 20px;
+  min-height: 20px;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--blue);
+  flex-shrink: 0;
+  pointer-events: auto;
+}
+ul.ingredients input:checked ~ span,
+ul.ingredients input:checked + span {
+  text-decoration: line-through;
+  color: #aaa;
+}
+ol.steps { padding-left: 22px; margin: 0 0 12px; }
+ol.steps li { margin: 10px 0; font-size: 0.98rem; padding-left: 4px; }
+.notes-box {
+  background: var(--light-blue-bg);
+  border: 1px solid var(--blue);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 14px 0 6px;
+}
+.notes-title {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  color: var(--blue);
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+}
+.notes-box ul { margin: 0; padding-left: 18px; }
+.notes-box li { font-size: 0.9rem; font-style: italic; color: #444; margin: 4px 0; }
+.toc-back { margin-top: 14px; text-align: right; }
+.toc-back a {
+  font-family: Arial, sans-serif;
+  font-size: 0.85rem;
+  color: var(--blue);
+  text-decoration: none;
+  display: inline-block;
+  padding: 6px 4px;
+}
+.toc-back a:active { opacity: 0.6; }
+@media (max-width: 420px) {
+  h1.book-title { font-size: 1.5rem; }
+  .section-title { font-size: 1.3rem; }
+  .recipe-title { font-size: 1.1rem; }
+  .chiclet-icon { font-size: 2.3rem; }
+  .chiclet-label { font-size: 0.75rem; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1 class="book-title">David's Recipe Book</h1>
+<p class="book-subtitle">Rebuilding in progress — full content coming back shortly. This confirms the auto-sync pipeline is live and working!</p>
+<p style="text-align:center;font-family:Arial, sans-serif;color:#555;">If you're seeing this page update automatically without you touching GitHub, the sync is working correctly.</p>
+</div>
+</body>
+</html>
