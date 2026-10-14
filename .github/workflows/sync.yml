@@ -25,7 +25,7 @@ jobs:
 
       - name: Download latest recipe book from Google Drive
         run: |
-          gdown "https://drive.google.com/uc?id=1fzOUOTUrrhrV__AtthiQQGV0mlEtFErC" -O index.html
+          gdown "https://drive.google.com/uc?id=1mxRODX7VXigX_QOyFjlXv4Cd1Divgnrk" -O index.html
           echo "--- First 200 chars of downloaded file: ---"
           head -c 200 index.html
           echo ""
