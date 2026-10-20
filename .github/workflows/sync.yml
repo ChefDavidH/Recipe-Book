@@ -25,7 +25,7 @@ jobs:
 
       - name: Download newest recipe book from the shared folder
         run: |
-          gdown --folder "https://drive.google.com/drive/folders/1d8rfC_24mGyFExDBwQXWD5uGE6NUkIIk" -O src
+          gdown --folder "https://drive.google.com/drive/folders/1uw7-LEWCs5aOdvHV7qIBxnHqhiQPITlP" -O src
           echo "--- Files found: ---"
           find src -type f | sort
           latest=$(find src -name 'rb_sync_2*.html' | sort | tail -n 1)
