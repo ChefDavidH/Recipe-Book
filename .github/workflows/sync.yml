@@ -28,7 +28,7 @@ jobs:
           gdown --folder "https://drive.google.com/drive/folders/1d8rfC_24mGyFExDBwQXWD5uGE6NUkIIk" -O src
           echo "--- Files found: ---"
           find src -type f | sort
-          latest=$(find src -name 'rb_sync_*.html' | sort | tail -n 1)
+          latest=$(find src -name 'rb_sync_2*.html' | sort | tail -n 1)
           if [ -z "$latest" ]; then
             echo "No rb_sync_*.html file in the folder yet. Leaving index.html untouched."
             exit 1
