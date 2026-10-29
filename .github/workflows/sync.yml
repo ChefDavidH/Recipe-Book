@@ -23,21 +23,61 @@ jobs:
       - name: Install gdown
         run: pip install gdown
 
-      - name: Download newest recipe book from the shared folder
+      - name: Download the shared folder
         run: |
           gdown --folder "https://drive.google.com/drive/folders/1d8rfC_24mGyFExDBwQXWD5uGE6NUkIIk" -O src
-          echo "--- Files found: ---"
-          find src -type f | sort
-          latest=$(find src -name 'rb_sync_2*.html' | sort | tail -n 1)
-          if [ -z "$latest" ]; then
-            echo "No rb_sync_*.html file in the folder yet. Leaving index.html untouched."
-            exit 1
+          n=$(find src -type f | wc -l)
+          echo "Files in folder: $n"
+          if [ "$n" -ge 40 ]; then
+            echo "::warning::Folder has $n files. Time to archive old versions."
           fi
-          echo "Using: $latest"
-          cp "$latest" index.html
-          head -c 200 index.html
-          echo ""
-          wc -c index.html
+
+      - name: Assemble the book from the newest version of each part
+        run: |
+          python3 - <<'PY'
+          import glob, os, re, sys
+          parts = {}
+          for path in glob.glob('src/**/rbp_*.html', recursive=True):
+              name = os.path.basename(path)
+              m = re.match(r'^(rbp_.+)_(\d{8}_\d{4})\.html$', name)
+              if not m:
+                  continue
+              key, stamp = m.groups()
+              if key not in parts or stamp > parts[key][0]:
+                  parts[key] = (stamp, path)
+          if not parts:
+              print('No rbp_ part files found. Leaving index.html untouched.')
+              sys.exit(1)
+          pieces = []
+          for key in sorted(parts):
+              stamp, path = parts[key]
+              print(key + ': using ' + os.path.basename(path))
+              with open(path, encoding='utf-8') as f:
+                  pieces.append(f.read())
+          html = ''.join(pieces)
+          problems = []
+          if not html.startswith('<!DOCTYPE html>'):
+              problems.append('does not start with <!DOCTYPE html>')
+          if not html.rstrip().endswith('</html>'):
+              problems.append('does not end with </html>')
+          for tag in ('section', 'div', 'ul', 'ol'):
+              opened = len(re.findall(r'<%s[\s>]' % tag, html))
+              closed = html.count('</%s>' % tag)
+              if opened != closed:
+                  problems.append('<%s> opened %d times but closed %d times' % (tag, opened, closed))
+          sections = html.count('<section class="book-section"')
+          print('Sections:', sections, '| Total bytes:', len(html.encode('utf-8')))
+          if sections < 10:
+              problems.append('only %d sections found' % sections)
+          if problems:
+              print('PROBLEMS FOUND. Leaving index.html untouched:')
+              for p in problems:
+                  print(' - ' + p)
+              sys.exit(1)
+          with open('index.html', 'w', encoding='utf-8') as f:
+              f.write(html)
+          print('index.html written.')
+          PY
 
       - name: Commit and push if changed
         run: |
